@@ -48,7 +48,7 @@ class PPO_Agent:
 
     def __init__(self, params: Params):
         self.params: Params = params
-        policy_name = self.params.agent_config['policy']
+        policy_name = MlpPolicy
         self.policy = eval(policy_name)
 
     def create_model(self, n_envs=1):
