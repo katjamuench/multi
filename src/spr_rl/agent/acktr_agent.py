@@ -8,7 +8,6 @@ from spr_rl.envs.spr_env import SprEnv
 #from tensorflow.nn import relu, tanh
 import csv
 import sys
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 # Progress bar code from
