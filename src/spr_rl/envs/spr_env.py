@@ -53,10 +53,17 @@ class SprEnv(gym.Env):
         self.episode_number = -1  # -1 here so that first episode reset call makes it 0
         self.message_dim = 3
         self.message_space = spaces.Box(-1.0, +1.0, shape=(self.message_dim,), dtype=np.float64)
-        self.observation_sub_space = spaces.Discrete(1)
-        #subspaces = self.observation_space
-        #subspaces['messages'] = spaces.Tuple((self.message_space,) * (self.num_agents-1))
-        #self.final_observation_space = spaces.Dict(spaces=subspaces)
+        # Define the Box observation space
+        box_observation_space = spaces.Box(low=-1, high=1000, shape=self.params.observation_shape)
+
+        # Define the Discrete observation space
+        self.discrete_observation_space = spaces.Discrete(1)
+
+        # Create a dictionary observation space
+        self.observation_space = spaces.Dict({
+            'observation': self.observation_space,
+            'discrete_observation': self.discrete_observation_space
+        })
 
     def step(self, action):
         """
@@ -159,8 +166,11 @@ class SprEnv(gym.Env):
             ),
             axis=None
         )
-        self.observation_sub_space = 1
-        return nn_state, reward, done, {'sim_time': self.wrapper.simulator.env.now}
+        observation = {
+            'box_observation': nn_state,  # Assuming nn_state matches the shape of box_observation_space
+            'discrete_observation': self.observation_sub_space
+        }
+        return observation, reward, done, {'sim_time': self.wrapper.simulator.env.now}
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.
@@ -188,7 +198,11 @@ class SprEnv(gym.Env):
             ),
             axis=None
         )
-        return nn_state
+        observation = {
+            'box_observation': nn_state,  # Assuming nn_state matches the shape of box_observation_space
+            'discrete_observation': self.observation_sub_space
+        }
+        return observation
 
     @staticmethod
     def get_dist_to_eg(network, flow):
