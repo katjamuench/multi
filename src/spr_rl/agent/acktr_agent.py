@@ -48,8 +48,6 @@ class PPO_Agent:
 
     def __init__(self, params: Params):
         self.params: Params = params
-        policy_name = "MlpPolicy"
-        self.policy = eval(policy_name)
 
     def create_model(self, n_envs=1):
         """ Create env and agent model """
@@ -58,8 +56,8 @@ class PPO_Agent:
         self.model = PPO(
             "MlpPolicy",
             self.env,
-            seed=self.params.seed,
-            policy_kwargs={"params": self.params}
+            seed=self.params.seed
+            #,policy_kwargs={"params": self.params}
         )
 
     def train(self):
