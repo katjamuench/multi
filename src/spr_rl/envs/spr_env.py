@@ -1,6 +1,7 @@
 import gym
 from spr_rl.agent.params import Params
 from gym.spaces import Discrete, Box
+from gym import spaces
 from gym.utils import seeding
 from spr_rl.envs.wrapper import SPRSimWrapper
 import numpy as np
@@ -37,10 +38,12 @@ class SprEnv(gym.Env):
     def __init__(self, **kwargs):
         self.params: Params = kwargs['params']
         # Obs space is currently temporary
+        self.num_agents = self.params.node_amount
         self.action_space = Discrete(self.params.action_limit)
         # Upper bound for the obs here is 1000, I assume TTL no higher than 1000
         self.observation_space = Box(-1, 1000, shape=self.params.observation_shape)
         self.wrapper = SPRSimWrapper(self.params)
+        self.messages = {}
         if not self.params.test_mode:
             file_hash = random.randint(0, 99999999)
             file_name = f"episode_reward_{file_hash}.csv"
@@ -48,6 +51,12 @@ class SprEnv(gym.Env):
             self.episode_reward_writer = csv.writer(self.episode_reward_stream)
             self.episode_reward_writer.writerow(['episode', 'reward'])
         self.episode_number = -1  # -1 here so that first episode reset call makes it 0
+        self.message_dim = 3
+        self.message_space = spaces.Box(-1.0, +1.0, shape=(self.message_dim,), dtype=np.float64)
+        self.observation_sub_space = spaces.Discrete(1)
+        #subspaces = self.observation_space
+        #subspaces['messages'] = spaces.Tuple((self.message_space,) * (self.num_agents-1))
+        #self.final_observation_space = spaces.Dict(spaces=subspaces)
 
     def step(self, action):
         """
@@ -71,6 +80,7 @@ class SprEnv(gym.Env):
         forward_to_eg = self.last_flow.forward_to_eg
         previous_node_id = self.last_flow.current_node_id
         flow_delay = self.last_flow.end2end_delay
+        current_agent_id = int(previous_node_id.replace("pop", ""))
 
         # Apply action
         nn_state, sim_state = self.wrapper.apply(action)
@@ -133,13 +143,30 @@ class SprEnv(gym.Env):
 
         # Set last flow to new flow. New actions will be generated for the new flow
         self.last_flow = new_flow
+        # Iterate over the agents
+        for agent_id in range(self.num_agents):
+            # Get the state of the current agent using the process_node_state function
+            mm_state = self.wrapper.process_node_state(sim_state, agent_id)
+
+            # Update the messages dictionary with the new state
+            self.messages[agent_id] = mm_state
+
+        m_state = list(self.messages.values())
+        m_state = np.array([m_state])
+        nn_state = np.concatenate(
+            (
+                nn_state,m_state
+            ),
+            axis=None
+        )
+        self.observation_sub_space = 1
         return nn_state, reward, done, {'sim_time': self.wrapper.simulator.env.now}
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.
 
         Returns:
-            observation (object): the initial observation.
+             observation (object): the initial observation.
         """
         if self.params.sim_seed is None:
             sim_seed = self.random_gen.randint(0, np.iinfo(np.int32).max, dtype=np.int32)
@@ -154,6 +181,13 @@ class SprEnv(gym.Env):
         self.last_flow = sim_state.flow
         self.network = sim_state.network
 
+        m_state = np.zeros(self.num_agents)
+        nn_state = np.concatenate(
+            (
+                nn_state, m_state
+            ),
+            axis=None
+        )
         return nn_state
 
     @staticmethod

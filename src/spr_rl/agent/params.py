@@ -95,6 +95,8 @@ class Params:
         # Component availability status = this node + max num of neighbor nodes
         self.vnf_status = 1 + self.net_degree
 
+        self.node_amount = self.get_node_amount()
+
         # Observation shape = Above elements combined
         self.observation_shape = (
             self.processing_size +
@@ -104,12 +106,26 @@ class Params:
             self.vnf_status +
             self.node_resources_size +
             self.link_resources_size +
-            self.neighbor_dist_to_eg,
+            self.neighbor_dist_to_eg
+             + self.node_amount
+            ,
         )
+
 
         # Action space limit (no shape in discrete actions):
         # The possible destinations for the flow = This node + max num of neighbor nodes
         self.action_limit = 1 + self.net_degree
+        # Node Amount = Number of nodes in network
+
+    def get_node_amount(self):
+        """ Get the number of nodes in the network """
+        # Init degree to zero
+        node_amount = 0
+        # Iterate over all nodes in the network
+        nodes = []
+        for node in self.network.nodes:
+            node_amount += 1
+        return node_amount
 
     def get_max_degree(self):
         """ Get the max degree of the network """
