@@ -1,5 +1,4 @@
-from stable_baselines3.common.policies import MlpPolicy, MlpLstmPolicy, MlpLnLstmPolicy, FeedForwardPolicy
-from stable_baselines3 import ACKTR
+from stable_baselines3 import PPO
 from stable_baselines3.common import make_vec_env
 from stable_baselines3.common.callbacks import BaseCallback
 from tqdm.auto import tqdm
@@ -45,22 +44,8 @@ class ProgressBarManager(object):
         self.pbar.close()
 
 
-class SPRPolicy(FeedForwardPolicy):
-    """
-    Custom policy. Exactly the same as MlpPolicy but with different NN configuration
-    """
-    def __init__(self, sess, ob_space, ac_space, n_env, n_steps, n_batch, reuse=False, **_kwargs):
-        self.params: Params = _kwargs['params']
-        pi_layers = self.params.agent_config['pi_nn']
-        vf_layers = self.params.agent_config['vf_nn']
-        activ_function_name = self.params.agent_config['nn_activ']
-        activ_function = eval(activ_function_name)
-        net_arch = [dict(vf=vf_layers, pi=pi_layers)]
-        super(SPRPolicy, self).__init__(sess, ob_space, ac_space, n_env, n_steps, n_batch, reuse,
-                                        net_arch=net_arch, act_fun=activ_function, feature_extraction="spr", **_kwargs)
 
-
-class ACKTR_Agent:
+class PPO_Agent:
 
     def __init__(self, params: Params):
         self.params: Params = params
@@ -71,8 +56,8 @@ class ACKTR_Agent:
         """ Create env and agent model """
         env_cls = SprEnv
         self.env = make_vec_env(env_cls, n_envs=n_envs, env_kwargs={"params": self.params}, seed=self.params.seed)
-        self.model = ACKTR(
-            self.policy,
+        self.model = PPO(
+            MlpPolicy,
             self.env,
             gamma=self.params.agent_config['gamma'],
             n_steps=self.params.agent_config['n_steps'],
@@ -130,9 +115,9 @@ class ACKTR_Agent:
     def load_model(self, path=None):
         """ Load the model from a zip archive """
         if path is not None:
-            self.model = ACKTR.load(path)
+            self.model = PPO.load(path)
         else:
-            self.model = ACKTR.load(self.params.model_path)
+            self.model = PPO.load(self.params.model_path)
             # Copy the model to the new directory
             self.model.save(self.params.model_path)
 
