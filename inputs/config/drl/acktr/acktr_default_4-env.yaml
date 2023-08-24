@@ -11,7 +11,7 @@ pi_nn: [64,64]
 nn_activ: tanh
 
 # Policy to be used. Available: SPRPolicy, MlpPolicy, MlpLstmPolicy, MlpLnLstmPolicy
-policy: SPRPolicy
+policy: MlpPolicy
 
 # Discount factor
 gamma: 0.99
