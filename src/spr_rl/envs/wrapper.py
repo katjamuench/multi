@@ -98,7 +98,6 @@ class SPRSimWrapper:
                 neighbors_dist_to_eg[i] = (self.flow.ttl - dist_to_eg) / self.flow.ttl
             else:
                 neighbors_dist_to_eg[i] = -1
-
         # Component availability status
         vnf_availability = np.full((self.params.vnf_status, ), -1.0, dtype=np.float32)
         for i, node_id in enumerate(self.node_and_neighbors):
@@ -141,3 +140,50 @@ class SPRSimWrapper:
         )
 
         return nn_state
+
+    def process_node_state(self, sim_state: SPRState, node_id):
+        self.flow = sim_state.flow
+        self.sfcs = sim_state.sfcs
+        self.network = sim_state.network
+        self.node_id = "pop" + str(node_id)
+
+
+        self.current_node = [self.flow.current_node_id]
+
+        dist_to_node = self.network.graph['shortest_paths'][(self.flow.current_node_id,
+                                                             self.node_id)][1]
+        dist_to_eg = dist_to_node + self.network.graph['shortest_paths'][(
+            self.node_id,
+            self.flow.egress_node_id)][1]
+        final_dist_to_eg = (self.flow.ttl - dist_to_eg) / self.flow.ttl
+
+        flow_sf = self.flow.current_sf
+        node_id = self.node_id
+        if flow_sf in sim_state.network.nodes[node_id]['available_sf']:
+            vnf_availability = 1
+        else:
+            vnf_availability = 0
+
+        node_remaining_cap = sim_state.network.nodes[node_id]['remaining_cap']
+        current_sf = self.flow.current_sf
+        if self.flow.forward_to_eg:
+            current_sf = self.sfcs[self.flow.sfc][-1]
+        resource_function = self.simulator.params.sf_list[current_sf]['resource_function']
+        if not self.flow.forward_to_eg:
+            requested_resources = resource_function(self.flow.dr)
+        else:
+            requested_resources = 0
+        node_remaining_cap_norm = (node_remaining_cap - requested_resources) / self.params.max_node_cap
+
+        node_remaining_cap_norm = np.clip(node_remaining_cap_norm, -1.0, 1.0)
+        node_remaining_cap = node_remaining_cap_norm
+        mm_state = np.array(final_dist_to_eg)
+        #mm_state = np.concatenate(
+         #   (
+          #      vnf_availability, final_dist_to_eg, node_remaining_cap
+#
+ #           ),
+  #          axis=None
+   #     )
+
+        return mm_state
