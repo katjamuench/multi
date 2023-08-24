@@ -58,20 +58,6 @@ class PPO_Agent:
         self.model = PPO(
             "MlpPolicy",
             self.env,
-            gamma=self.params.agent_config['gamma'],
-            n_steps=self.params.agent_config['n_steps'],
-            ent_coef=self.params.agent_config['ent_coef'],
-            vf_coef=self.params.agent_config['vf_coef'],
-            vf_fisher_coef=self.params.agent_config['vf_fisher_coef'],
-            max_grad_norm=self.params.agent_config['max_grad_norm'],
-            learning_rate=self.params.agent_config['learning_rate'],
-            gae_lambda=self.params.agent_config['gae_lambda'],
-            lr_schedule=self.params.agent_config['lr_schedule'],
-            kfac_clip=self.params.agent_config['kfac_clip'],
-            kfac_update=self.params.agent_config['kfac_update'],
-            async_eigen_decomp=self.params.agent_config['async_eigen_decomp'],
-            verbose=self.params.agent_config['verbose'],
-            tensorboard_log="./tb/acktr/",
             seed=self.params.seed,
             policy_kwargs={"params": self.params}
         )
