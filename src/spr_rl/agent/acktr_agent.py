@@ -56,7 +56,7 @@ class PPO_Agent:
         env_cls = SprEnv
         self.env = make_vec_env(env_cls, n_envs=n_envs, env_kwargs={"params": self.params}, seed=self.params.seed)
         self.model = PPO(
-            MlpPolicy,
+            "MlpPolicy",
             self.env,
             gamma=self.params.agent_config['gamma'],
             n_steps=self.params.agent_config['n_steps'],
