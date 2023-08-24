@@ -1,12 +1,12 @@
-from stable_baselines.common.policies import MlpPolicy, MlpLstmPolicy, MlpLnLstmPolicy, FeedForwardPolicy
-from stable_baselines import ACKTR
-from stable_baselines.common import make_vec_env
-from stable_baselines.common.callbacks import BaseCallback
+from stable_baselines3.common.policies import MlpPolicy, MlpLstmPolicy, MlpLnLstmPolicy, FeedForwardPolicy
+from stable_baselines3 import ACKTR
+from stable_baselines3.common import make_vec_env
+from stable_baselines3.common.callbacks import BaseCallback
 from tqdm.auto import tqdm
 from .params import Params
 from spr_rl.envs.spr_env import SprEnv
-import tensorflow as tf
-from tensorflow.nn import relu, tanh
+#import tensorflow as tf
+#from tensorflow.nn import relu, tanh
 import csv
 import sys
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
