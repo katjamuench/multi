@@ -1,5 +1,5 @@
 # Default TRPO configurations
-agent: ACKTR_Agent
+agent: PPO_Agent
 
 n_env: 4
 
