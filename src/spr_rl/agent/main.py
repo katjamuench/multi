@@ -1,6 +1,6 @@
 import click
 import random
-from spr_rl.agent import ACKTR_Agent
+from spr_rl.agent import PPO_Agent
 from spr_rl.agent import Params
 import os
 import inspect
