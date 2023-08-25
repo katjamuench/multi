@@ -51,18 +51,12 @@ class SprEnv(gym.Env):
             self.episode_reward_writer = csv.writer(self.episode_reward_stream)
             self.episode_reward_writer.writerow(['episode', 'reward'])
         self.episode_number = -1  # -1 here so that first episode reset call makes it 0
-        self.message_dim = 3
+        self.message_dim = 11
         self.message_space = spaces.Box(-1.0, +1.0, shape=(self.message_dim,), dtype=np.float64)
-        # Define the Box observation space
-        box_observation_space = spaces.Box(low=-1, high=1000, shape=self.params.observation_shape)
-
-        # Define the Discrete observation space
-        self.discrete_observation_space = spaces.Discrete(1)
-
         # Create a dictionary observation space
         self.observation_space = spaces.Dict({
             'observation': self.observation_space,
-            'discrete_observation': self.discrete_observation_space
+            'message': self.message_space
         })
 
     def step(self, action):
@@ -167,8 +161,8 @@ class SprEnv(gym.Env):
             axis=None
         )
         observation = {
-            'box_observation': nn_state,  # Assuming nn_state matches the shape of box_observation_space
-            'discrete_observation': self.observation_sub_space
+            'mm_state': mm_state,
+            'nn_state': nn_state
         }
         return observation, reward, done, {'sim_time': self.wrapper.simulator.env.now}
 
@@ -200,7 +194,7 @@ class SprEnv(gym.Env):
         )
         observation = {
             'box_observation': nn_state,  # Assuming nn_state matches the shape of box_observation_space
-            'discrete_observation': self.observation_sub_space
+            'discrete_observation': self.
         }
         return observation
 
