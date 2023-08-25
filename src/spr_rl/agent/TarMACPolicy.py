@@ -17,11 +17,11 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         total_concat_size = 0
         for key, subspace in observation_space.spaces.items():
             if key == "messages":
-                extractors[key] = nn.Linear(subspace.shape[0], num_sending_agents)
-                total_concat_size += num_sending_agents
-            elif key == "observations":
                 extractors[key] = nn.Linear(subspace.shape[0], 11)
                 total_concat_size += 11
+            elif key == "observations":
+                extractors[key] = nn.Linear(subspace.shape[0], 17)
+                total_concat_size += 17
         #self.messages = nn.ModuleDict(extractors[messages])
         self.extractors = nn.ModuleDict(extractors)
 
