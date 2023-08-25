@@ -9,13 +9,13 @@ from spr_rl.agent.params import Params
 from stable_baselines3.common.policies import ActorCriticPolicy
 
 class CustomCombinedExtractor(BaseFeaturesExtractor):
-    def __init__(self, observation_space: gym.spaces.Dict):
+    def __init__(self, observation_space: spaces.Dict):
         super().__init__(observation_space, features_dim=1)
 
         extractors = {}
         num_sending_agents = 11
         total_concat_size = 0
-        for key, subspace in observation_space.spaces.items():
+        for key, subspace in observation_space.items():
             if key == "messages":
                 extractors[key] = nn.Linear(subspace.shape[0], 11)
                 total_concat_size += 11
