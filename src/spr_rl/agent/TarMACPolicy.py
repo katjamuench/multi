@@ -2,6 +2,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 import numpy as np
 import torch
 import torch.nn as nn
+import gym
 from gym import spaces
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from spr_rl.agent.params import Params
