@@ -55,8 +55,8 @@ class SprEnv(gym.Env):
         self.message_space = spaces.Box(-1.0, +1.0, shape=(self.message_dim,), dtype=np.float64)
         # Create a dictionary observation space
         self.observation_space = spaces.Dict({
-            'observation': self.observation_space,
-            'message': self.message_space
+            'm_state': self.message_space,
+            'nn_state': self.observation_space
         })
 
     def step(self, action):
