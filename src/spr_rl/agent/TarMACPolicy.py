@@ -6,6 +6,7 @@ import gym
 from gym import spaces
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from spr_rl.agent.params import Params
+from stable_baselines3.common.policies import ActorCriticPolicy
 
 class CustomCombinedExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: gym.spaces.Dict):
