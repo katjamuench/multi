@@ -161,7 +161,7 @@ class SprEnv(gym.Env):
             axis=None
         )
         observation = {
-            'mm_state': mm_state,
+            'm_state': m_state,
             'nn_state': nn_state
         }
         return observation, reward, done, {'sim_time': self.wrapper.simulator.env.now}
@@ -193,8 +193,8 @@ class SprEnv(gym.Env):
             axis=None
         )
         observation = {
-            'box_observation': nn_state,  # Assuming nn_state matches the shape of box_observation_space
-            'discrete_observation': self.
+            'm_state': m_state,
+            'nn_state': nn_state
         }
         return observation
 
