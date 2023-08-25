@@ -154,12 +154,7 @@ class SprEnv(gym.Env):
 
         m_state = list(self.messages.values())
         m_state = np.array([m_state])
-        nn_state = np.concatenate(
-            (
-                nn_state,m_state
-            ),
-            axis=None
-        )
+
         observation = {
             'm_state': m_state,
             'nn_state': nn_state
@@ -186,12 +181,7 @@ class SprEnv(gym.Env):
         self.network = sim_state.network
 
         m_state = np.zeros(self.num_agents)
-        nn_state = np.concatenate(
-            (
-                nn_state, m_state
-            ),
-            axis=None
-        )
+
         observation = {
             'm_state': m_state,
             'nn_state': nn_state

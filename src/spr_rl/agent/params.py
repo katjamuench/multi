@@ -107,7 +107,7 @@ class Params:
             self.node_resources_size +
             self.link_resources_size +
             self.neighbor_dist_to_eg
-             + self.node_amount
+            # + self.node_amount
             ,
         )
 
