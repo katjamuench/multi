@@ -8,6 +8,7 @@ from spr_rl.envs.spr_env import SprEnv
 #from tensorflow.nn import relu, tanh
 import csv
 import sys
+from spr_rl.agent.TarMACPolicy import CustomActorCriticPolicy
 
 
 # Progress bar code from
@@ -54,7 +55,7 @@ class PPO_Agent:
         env_cls = SprEnv
         self.env = make_vec_env(env_cls, n_envs=n_envs, env_kwargs={"params": self.params}, seed=self.params.seed)
         self.model = PPO(
-            "MultiInputPolicy",
+            "CustomActorCriticPolicy",
             self.env,
             seed=self.params.seed
             #,policy_kwargs={"params": self.params}
