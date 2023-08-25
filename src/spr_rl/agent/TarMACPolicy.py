@@ -13,7 +13,7 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         super().__init__(observation_space, features_dim=1)
 
         extractors = {}
-        num_sending_agents = Params.get_node_amount() - 1
+        num_sending_agents = Params.get_node_amount()
         total_concat_size = 0
         for key, subspace in observation_space.spaces.items():
             if key == "messages":
