@@ -53,12 +53,14 @@ class CombinedExtractor(BaseFeaturesExtractor):
         super().__init__(observation_space, features_dim=1)
 
         extractors: Dict[str, nn.Module] = {}
-
+        messages = []
         total_concat_size = 0
         for key, subspace in observation_space.spaces.items():
             extractors[key] = nn.Flatten()
             total_concat_size += get_flattened_obs_dim(subspace)
-
+            if key == "messages":
+                messages.append(subspace)
+        self.messages = nn.ModuleList(messages)
         self.extractors = nn.ModuleDict(extractors)
 
         # Update the features dim manually
