@@ -15,7 +15,7 @@ run_duration: 100                  # default: 100
 vnf_timeout: 100                   # default: 200
 
 # TTL list: Randomly select a TTL from the following list for each flow
-ttl_choices: [100]
+ttl_choices: [200]
 
 controller_class: FlowController
 decision_maker_class: ExternalDecisionMaker
