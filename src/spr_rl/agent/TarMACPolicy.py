@@ -7,7 +7,16 @@ from gym import spaces
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from spr_rl.agent.params import Params
 from stable_baselines3.common.policies import ActorCriticPolicy
+from typing import Dict, List, Tuple, Type, Union
 
+import gymnasium as gym
+import torch as th
+from gymnasium import spaces
+from torch import nn
+
+from stable_baselines3.common.preprocessing import get_flattened_obs_dim, is_image_space
+from stable_baselines3.common.type_aliases import TensorDict
+from stable_baselines3.common.utils import get_device
 class CombinedExtractor(BaseFeaturesExtractor):
     """
     Combined features extractor for Dict observation spaces.
