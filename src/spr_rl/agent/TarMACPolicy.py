@@ -15,6 +15,7 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         extractors = {}
         num_sending_agents = 11
         total_concat_size = 0
+        print(observation_space)
         for key, subspace in observation_space.spaces.items():
             if key == "messages":
                 extractors[key] = nn.Linear(subspace.shape[0], 11)
