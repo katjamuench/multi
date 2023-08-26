@@ -8,7 +8,7 @@ from spr_rl.envs.spr_env import SprEnv
 #from tensorflow.nn import relu, tanh
 import csv
 import sys
-from spr_rl.agent.TarMACPolicy import CustomActorCriticPolicy
+from spr_rl.agent.TarMACPolicy import MultiInputActorCriticPolicy
 
 
 # Progress bar code from
