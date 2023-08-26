@@ -16,15 +16,15 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         num_sending_agents = 11
         total_concat_size = 0
         print(observation_space)
-        for key, subspace in observation_space.spaces.items():
-            if key == "messages":
-                extractors[key] = nn.Linear(subspace.shape[0], 11)
-                total_concat_size += 11
-            elif key == "observations":
-                extractors[key] = nn.Linear(subspace.shape[0], 17)
-                total_concat_size += 17
+        #for key, subspace in observation_space.spaces.items():
+         #   if key == "messages":
+          #      extractors[key] = nn.Linear(subspace.shape[0], 11)
+           #     total_concat_size += 11
+            #elif key == "observations":
+             #   extractors[key] = nn.Linear(subspace.shape[0], 17)
+              #  total_concat_size += 17
         #self.messages = nn.ModuleDict(extractors[messages])
-        self.extractors = nn.ModuleDict(extractors)
+        #self.extractors = nn.ModuleDict(extractors)
 
         # Update the features dim manually
         self._features_dim = total_concat_size
