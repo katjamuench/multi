@@ -74,7 +74,7 @@ class MultiInputActorCriticPolicy(ActorCriticPolicy):
         self,
         observation_space: spaces.Dict,
         action_space: spaces.Space,
-        lr_schedule: Schedule,
+        #lr_schedule: Schedule,
         net_arch: Optional[Union[List[int], Dict[str, List[int]]]] = None,
         activation_fn: Type[nn.Module] = nn.Tanh,
         ortho_init: bool = True,
