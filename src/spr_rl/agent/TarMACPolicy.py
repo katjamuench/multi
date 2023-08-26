@@ -89,6 +89,9 @@ class MultiInputActorCriticPolicy(ActorCriticPolicy):
         normalize_images: bool = True,
         optimizer_class: Type[th.optim.Optimizer] = th.optim.Adam,
         optimizer_kwargs: Optional[Dict[str, Any]] = None,
+        message_key_dim=32,
+        message_value_dim=32,
+        critic_use_global_state=True,
     ):
         super().__init__(
             observation_space,
@@ -108,6 +111,7 @@ class MultiInputActorCriticPolicy(ActorCriticPolicy):
             normalize_images,
             optimizer_class,
             optimizer_kwargs,
+
         )
 
 class MessageAggregator(nn.Module):
