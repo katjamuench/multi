@@ -146,35 +146,3 @@ class MessageAggregator(nn.Module):
         return outputs
 
 
-class TarMACModel(TorchRNN, nn.Module):
-    def __init__(
-        self,
-        observation_space,
-        action_space,
-        num_outputs,
-        model_config,
-        name,
-        # Extra MAPPOModel arguments
-        actor_hiddens=None,
-        actor_hidden_activation='tanh',
-        critic_hiddens=None,
-        critic_hidden_activation='tanh',
-        lstm_cell_size=256,
-        # Extra TarMACModel arguments
-        message_key_dim=32,
-        message_value_dim=32,
-        critic_use_global_state=True,
-        **kwargs,
-    ):
-        if actor_hiddens is None:
-            actor_hiddens = [256, 256]
-
-        if critic_hiddens is None:
-            critic_hiddens = [256, 256]
-
-        nn.Module.__init__(self)
-        super().__init__(observation_space, action_space, num_outputs, model_config, name)
-        self.observation_space = observation_space['nn_state']
-        self.message_space = observation_space['m_state']
-        self.flat_obs_dim = get_space_flat_size(self.observation_space)
-
