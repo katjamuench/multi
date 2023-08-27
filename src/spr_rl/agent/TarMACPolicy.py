@@ -37,6 +37,20 @@ from stable_baselines3.common.type_aliases import Schedule
 from stable_baselines3.common.utils import get_device, is_vectorized_observation, obs_as_tensor
 SelfBaseModel = TypeVar("SelfBaseModel", bound="BaseModel")
 from sb3_contrib import RecurrentPPO
+from stable_baselines3.common.buffers import RolloutBuffer
+from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.on_policy_algorithm import OnPolicyAlgorithm
+from stable_baselines3.common.policies import BasePolicy
+from stable_baselines3.common.type_aliases import GymEnv, MaybeCallback, Schedule
+from stable_baselines3.common.utils import explained_variance, get_schedule_fn, obs_as_tensor, safe_mean
+from stable_baselines3.common.vec_env import VecEnv
+
+from sb3_contrib.common.recurrent.buffers import RecurrentDictRolloutBuffer, RecurrentRolloutBuffer
+from sb3_contrib.common.recurrent.policies import RecurrentActorCriticPolicy
+from sb3_contrib.common.recurrent.type_aliases import RNNStates
+from sb3_contrib.ppo_recurrent.policies import CnnLstmPolicy, MlpLstmPolicy, MultiInputLstmPolicy
+
+SelfRecurrentPPO = TypeVar("SelfRecurrentPPO", bound="RecurrentPPO")
 
 
 class CombinedExtractor(BaseFeaturesExtractor):
