@@ -59,7 +59,7 @@ class PPO_Agent:
         self.model = TarMAC(
             "MultiInputLstmPolicy",
             self.env,
-            seed=self.params.seed
+            #seed=self.params.seed
             #,policy_kwargs={"params": self.params}
         )
 
