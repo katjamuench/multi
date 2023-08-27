@@ -105,7 +105,7 @@ class MessageAggregator(nn.Module):
 
         return outputs
 
-class TarMAC(nn.Module, RecurrentPPO):
+class TarMAC(RecurrentPPO):
     def __init__(
         self,
         message_key_dim=32,
