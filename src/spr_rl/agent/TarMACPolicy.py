@@ -6,7 +6,7 @@ import copy
 import warnings
 from abc import ABC, abstractmethod
 from functools import partial
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union, ClassVar
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from spr_rl.agent.params import Params
 from stable_baselines3.common.policies import ActorCriticPolicy
