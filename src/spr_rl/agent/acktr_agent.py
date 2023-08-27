@@ -8,7 +8,7 @@ from spr_rl.envs.spr_env import SprEnv
 #from tensorflow.nn import relu, tanh
 import csv
 import sys
-from spr_rl.agent.TarMACPolicy import MultiInputActorCriticPolicy
+from spr_rl.agent.TarMACPolicy import TarMAC
 from sb3_contrib import RecurrentPPO
 from stable_baselines3.common.evaluation import evaluate_policy
 
@@ -56,7 +56,7 @@ class PPO_Agent:
         """ Create env and agent model """
         env_cls = SprEnv
         self.env = make_vec_env(env_cls, n_envs=n_envs, env_kwargs={"params": self.params}, seed=self.params.seed)
-        self.model = RecurrentPPO(
+        self.model = TarMAC(
             "MultiInputLstmPolicy",
             self.env,
             seed=self.params.seed
