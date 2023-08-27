@@ -3,6 +3,7 @@ import torch as th
 from torch import nn
 import collections
 import copy
+from copy import deepcopy
 import warnings
 from abc import ABC, abstractmethod
 from functools import partial
